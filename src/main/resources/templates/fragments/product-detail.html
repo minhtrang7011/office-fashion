@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chi tiết sản phẩm</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="row g-0">
+            <!-- Hình ảnh sản phẩm -->
+            <div class="col-md-5">
+                <img th:src="${product.image}" class="img-fluid rounded-start" alt="Hình sản phẩm">
+            </div>
+            <!-- Thông tin sản phẩm -->
+            <div class="col-md-7">
+                <div class="card-body">
+                    <h2 class="card-title fw-bold text-primary" th:text="${product.name}"></h2>
+                    <h4 class="text-danger fw-bold">Giá: <span th:text="${product.price}"></span> VND</h4>
+                    <p class="card-text" th:text="${product.description}"></p>
+
+                    <!-- Nút thêm vào giỏ hàng và quay lại -->
+                    <div class="d-flex gap-3 mt-4">
+                        <a href="/" class="btn btn-secondary">🏠 Quay lại trang chủ</a>
+                        <button class="btn btn-success">🛒 Thêm vào giỏ hàng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS (optional) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
