@@ -1,6 +1,6 @@
 package com.poly.service;
 
-import com.poly.entity.Product;
+import com.poly.model.Product;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package com.poly.service;
 
-import com.poly.entity.Cart;
-import com.poly.entity.User;
+import com.poly.model.Cart;
+import com.poly.model.User;
 
 import java.util.List;
 

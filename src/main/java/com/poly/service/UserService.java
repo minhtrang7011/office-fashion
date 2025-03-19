@@ -1,6 +1,6 @@
 package com.poly.service;
 
-import com.poly.entity.User;
+import com.poly.model.User;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,8 +1,7 @@
 package com.poly.serviceImpl;
 
-import com.poly.entity.Cart;
-import com.poly.entity.Product;
-import com.poly.entity.User;
+import com.poly.model.Cart;
+import com.poly.model.User;
 import com.poly.repository.CartRepository;
 import com.poly.repository.ProductRepository;
 import com.poly.service.CartService;

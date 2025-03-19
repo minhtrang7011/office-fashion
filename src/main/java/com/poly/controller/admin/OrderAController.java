@@ -1,6 +1,6 @@
 package com.poly.controller.admin;
 
-import com.poly.entity.Order;
+import com.poly.model.Order;
 import com.poly.repository.OrderRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -1,7 +1,7 @@
 package com.poly.controller;
 
-import com.poly.entity.Category;
-import com.poly.entity.Product;
+import com.poly.model.Category;
+import com.poly.model.Product;
 import com.poly.service.CategoryService;
 import com.poly.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;

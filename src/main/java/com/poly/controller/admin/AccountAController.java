@@ -1,6 +1,6 @@
 package com.poly.controller.admin;
 
-import com.poly.entity.User;
+import com.poly.model.User;
 import com.poly.service.AccountService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

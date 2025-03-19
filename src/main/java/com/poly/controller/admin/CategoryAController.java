@@ -1,6 +1,6 @@
 package com.poly.controller.admin;
 
-import com.poly.entity.Category;
+import com.poly.model.Category;
 import com.poly.repository.CategoryRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

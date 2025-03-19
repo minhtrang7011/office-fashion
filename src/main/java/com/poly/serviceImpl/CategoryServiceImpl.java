@@ -1,6 +1,6 @@
 package com.poly.serviceImpl;
 
-import com.poly.entity.Category;
+import com.poly.model.Category;
 import com.poly.repository.CategoryRepository;
 import com.poly.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;

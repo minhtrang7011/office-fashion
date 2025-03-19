@@ -1,6 +1,6 @@
 package com.poly.service;
 
-import com.poly.entity.Category;
+import com.poly.model.Category;
 
 import java.util.List;
 

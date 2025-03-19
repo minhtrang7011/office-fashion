@@ -1,6 +1,6 @@
 package com.poly.serviceImpl;
 
-import com.poly.entity.User;
+import com.poly.model.User;
 import com.poly.repository.UserRepository;
 import com.poly.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
