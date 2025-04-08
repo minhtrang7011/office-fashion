@@ -25,7 +25,7 @@ public class CartController {
         user.setId(userId);
 
         model.addAttribute("cartItems", cartService.getCartByUser(user));
-        model.addAttribute("totalPrice", cartService.getTotalPrice(user));
+//        model.addAttribute("totalPrice", cartService.getTotalPrice(user));
 
         return "cart";
     }

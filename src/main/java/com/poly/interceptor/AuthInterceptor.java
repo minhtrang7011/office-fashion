@@ -19,10 +19,8 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        // Lấy user từ session
         User user = SessionUtils.getUserFromSession(request);
 
-        // Nếu chưa đăng nhập, chuyển hướng về trang login
         if (user == null) {
             response.sendRedirect("/auth/login");
             return false;
@@ -33,7 +31,6 @@ public class AuthInterceptor implements HandlerInterceptor {
             response.sendRedirect("/access-denied");
             return false;
         }
-
         return true;
     }
 

@@ -22,50 +22,10 @@ public class CartServiceImpl implements CartService {
     public List<Cart> getCartByUser(User user) {
         return cartRepository.findByUser(user);
     }
-//
+
 //    @Override
-//    public void addToCart(User user, Long productId, int quantity) {
-//        Product product = productRepository.findById(productId)
-//                .orElseThrow(() -> new RuntimeException("Sản phẩm không tồn tại"));
-//        List<Cart> userCart = cartRepository.findByUser(user);
-//
-//        for (Cart cartItem : userCart) {
-//            if (cartItem.getProduct().getId().equals(productId)) {
-//                cartItem.setQuantity(cartItem.getQuantity() + quantity);
-//                cartRepository.save(cartItem);
-//                return;
-//            }
-//        }
-//
-//        Cart newCartItem = new Cart();
-//        newCartItem.setUser(user);
-//        newCartItem.setProduct(product);
-//        newCartItem.setQuantity(quantity);
-//        cartRepository.save(newCartItem);
-//    }
-//
-//    @Override
-//    public void updateQuantity(Long cartId, int quantity) {
-//        Cart cartItem = cartRepository.findById(cartId)
-//                .orElseThrow(() -> new RuntimeException("Sản phẩm trong giỏ hàng không tồn tại"));
-//        cartItem.setQuantity(quantity);
-//        cartRepository.save(cartItem);
-//    }
-//
-//    @Override
-//    public void removeFromCart(Long cartId) {
-//        cartRepository.deleteById(cartId);
-//    }
-//
-    @Override
-    public double getTotalPrice(User user) {
-        List<Cart> userCart = cartRepository.findByUser(user);
-        return userCart.stream().mapToDouble(cart -> cart.getProduct().getPrice() * cart.getQuantity()).sum();
-    }
-//
-//    @Override
-//    public void clearCart(User user) {
-//        List<Cart> userCart = cartRepository.findByUser(user);
-//        cartRepository.deleteAll(userCart);
+//    public double getTotalPrice(User user) {
+//       List<Cart> userCart = cartRepository.findByUser(user);
+//        return userCart.stream().mapToDouble(cart -> cart.getProduct().getPrice() * cart.getQuantity()).sum();
 //    }
 }

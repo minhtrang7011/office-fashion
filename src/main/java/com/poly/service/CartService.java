@@ -14,7 +14,7 @@ public interface CartService {
 //
 //    void removeFromCart(Long cartId);
 //
-    double getTotalPrice(User user);
+//    double getTotalPrice(User user);
 //
 //    void clearCart(User user);
 }
