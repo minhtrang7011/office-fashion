@@ -21,21 +21,30 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> getUserById(Long id) {
-        return Optional.empty();
+        return userRepository.findById(id);
     }
 
     @Override
     public User saveUser(User user) {
-        return null;
+        return userRepository.save(user);
     }
 
     @Override
     public void deleteUser(Long id) {
-
+        userRepository.deleteById(id);
     }
 
     @Override
     public Optional<User> getUserByUsername(String username) {
-        return Optional.empty();
+        return Optional.ofNullable(userRepository.findByUsername(username));
+    }
+
+    @Override
+    public User login(String username, String password) {
+        User user = userRepository.findByUsername(username);
+        if (user != null && user.getPassword().equals(password)) {
+            return user;
+        }
+        return null;
     }
 }

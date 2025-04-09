@@ -2,7 +2,6 @@ package com.poly.interceptor;
 
 import com.poly.model.User;
 import com.poly.service.UserService;
-import com.poly.utils.SessionUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
@@ -17,22 +16,22 @@ public class AuthInterceptor implements HandlerInterceptor {
         this.userService = userService;
     }
 
-    @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        User user = SessionUtils.getUserFromSession(request);
-
-        if (user == null) {
-            response.sendRedirect("/auth/login");
-            return false;
-        }
-
-        // Kiểm tra nếu user không phải ADMIN (roleId != 1)
-        if (request.getRequestURI().startsWith("/admin") && !user.getRoleId().equals(1)) {
-            response.sendRedirect("/access-denied");
-            return false;
-        }
-        return true;
-    }
+//    @Override
+//    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+//        User user = SessionUtils.getUserFromSession(request);
+//
+//        if (user == null) {
+//            response.sendRedirect("/auth/login");
+//            return false;
+//        }
+//
+//        // Kiểm tra nếu user không phải ADMIN (roleId != 1)
+//        if (request.getRequestURI().startsWith("/admin") && !user.getRoleId().equals(1)) {
+//            response.sendRedirect("/access-denied");
+//            return false;
+//        }
+//        return true;
+//    }
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {

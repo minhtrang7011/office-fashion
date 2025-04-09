@@ -39,16 +39,30 @@
             <!-- Các icon bên phải -->
             <div class="d-flex align-items-center">
                 <a href="#" class="me-3 text-dark"><i class="bi bi-heart"></i></a>
-                <a th:href="@{/cart}" class="me-3 text-dark">
-                    <i class="bi bi-cart3"></i>
-                </a>
-                <a th:href="@{/login}" class="me-3 text-dark">
+
+                <a th:href="@{/cart}" class="me-3 text-dark"><i class="bi bi-cart3"></i></a>
+
+                <!-- Nếu đã login -->
+                <div th:if="${username != null}" class="dropdown">
+                    <a href="#" class="text-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
+                        <span th:text="'Xin chào, ' + ${username}"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="/logout">Đăng xuất</a></li>
+                    </ul>
+                </div>
+
+                <!-- Nếu chưa login -->
+                <a th:if="${username == null}" th:href="@{/login}" class="me-3 text-dark">
                     <i class="bi bi-person"></i>
                 </a>
+
                 <form class="d-flex">
-                    <input class="form-control form-control-sm me-2" type="search" placeholder="Tìm kiếm"
-                           aria-label="Search">
-                    <button class="btn btn-outline-dark btn-sm" type="submit"><i class="bi bi-search"></i></button>
+                    <input class="form-control form-control-sm me-2" type="search"
+                           placeholder="Tìm kiếm" aria-label="Search">
+                    <button class="btn btn-outline-dark btn-sm" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
                 </form>
             </div>
         </div>
