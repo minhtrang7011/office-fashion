@@ -11,15 +11,15 @@
     <form th:action="@{/register}" method="post">
         <div class="mb-3">
             <label for="username" class="form-label">Tên đăng nhập</label>
-            <input type="text" id="username" name="username" class="form-control" required>
+            <input type="text" id="username" name="username" class="form-control">
         </div>
         <div class="mb-3">
             <label for="password" class="form-label">Mật khẩu</label>
-            <input type="password" id="password" name="password" class="form-control" required>
+            <input type="text" id="password" name="password" class="form-control">
         </div>
         <div class="mb-3">
             <label for="confirmPassword" class="form-label">Nhập lại mật khẩu</label>
-            <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" required>
+            <input type="text" id="confirmPassword" name="confirmPassword" class="form-control">
         </div>
         <button type="submit" class="btn btn-danger w-100 mt-3">Đăng Ký</button>
         <p class="text-center mt-2"><a href="/login">Đã có tài khoản? Đăng nhập</a></p>

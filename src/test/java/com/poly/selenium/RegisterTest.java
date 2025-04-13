@@ -1,88 +1,134 @@
 package com.poly.selenium;
 
-import com.poly.controller.AuthController;
-import com.poly.model.User;
-import com.poly.service.UserService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.ui.ConcurrentModel;
-import org.springframework.ui.Model;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-@ExtendWith(MockitoExtension.class)
 public class RegisterTest {
-    @InjectMocks
-    private AuthController authController;
+    private WebDriver driver;
 
-    @Mock
-    private UserService userService;
-
-    private Model model;
-
-    @BeforeEach
-    void setUp() {
-        model = new ConcurrentModel();
+    @BeforeClass
+    public void setup() {
+        driver = new ChromeDriver();
+        driver.manage().window().maximize();
     }
 
     @Test
-    void testRegisterSuccess() {
-        // Given
-        String username = "newuser";
-        String password = "123";
-        String confirmPassword = "123";
+    public void testRegisterWithValidInfo() throws InterruptedException {
+        driver.get("http://localhost:8080/register");
+        Thread.sleep(1000);
 
-        when(userService.getUserByUsername(username)).thenReturn(Optional.empty());
+        WebElement usernameInput = driver.findElement(By.id("username"));
+        WebElement passwordInput = driver.findElement(By.id("password"));
+        WebElement confirmPasswordInput = driver.findElement(By.id("confirmPassword"));
+        WebElement registerBtn = driver.findElement(By.cssSelector("button[type='submit']"));
 
-        // When
-        String result = authController.register(username, password, confirmPassword, model);
+        String uniqueUsername = "user" + System.currentTimeMillis();
+        usernameInput.sendKeys(uniqueUsername);
+        Thread.sleep(1000);
+        passwordInput.sendKeys("123456");
+        Thread.sleep(1000);
+        confirmPasswordInput.sendKeys("123456");
 
-        // Then
-        assertEquals("redirect:/login", result);
-        verify(userService).saveUser(any(User.class));
-    }
+        Thread.sleep(1000);
+        registerBtn.click();
 
+        Thread.sleep(2000);
 
-    @Test
-    void testRegisterFail_UsernameExists() {
-        // Given
-        String username = "trangntm";
-        String password = "123";
-        String confirmPassword = "123";
+        String currentUrl = driver.getCurrentUrl();
 
-        when(userService.getUserByUsername(username)).thenReturn(Optional.of(new User()));
-
-        // When
-        String result = authController.register(username, password, confirmPassword, model);
-
-        // Then
-        assertEquals("register", result);
-        assertEquals("Tên đăng nhập đã tồn tại!", model.getAttribute("error"));
+        Assert.assertTrue(currentUrl.contains("/login"));
     }
 
     @Test
-    void testRegisterFail_PasswordMismatch() {
-        // Given
-        String username = "newuser";
-        String password = "123";
-        String confirmPassword = "456";
+    public void testRegisterWithDuplicateUsername() throws InterruptedException {
+        driver.get("http://localhost:8080/register");
+        Thread.sleep(1000);
 
-        when(userService.getUserByUsername(username)).thenReturn(Optional.empty());
+        WebElement usernameInput = driver.findElement(By.id("username"));
+        WebElement passwordInput = driver.findElement(By.id("password"));
+        WebElement confirmPasswordInput = driver.findElement(By.id("confirmPassword"));
+        WebElement registerBtn = driver.findElement(By.cssSelector("button[type='submit']"));
 
-        // When
-        String result = authController.register(username, password, confirmPassword, model);
+        usernameInput.sendKeys("minhtrangn");
+        Thread.sleep(1000);
+        passwordInput.sendKeys("password_2");
+        Thread.sleep(1000);
+        confirmPasswordInput.sendKeys("password_2");
 
-        // Then
-        assertEquals("register", result);
-        assertEquals("Mật khẩu không khớp!", model.getAttribute("error"));
+        Thread.sleep(1000);
+        registerBtn.click();
+        Thread.sleep(2000);
+
+        WebElement errorElement = driver.findElement(By.cssSelector(".alert.alert-danger p"));
+        String errorText = errorElement.getText();
+
+        Assert.assertTrue(errorText.contains("Tên đăng nhập đã tồn tại"));
+    }
+
+    @Test
+    public void testRegisterWithInvalidPasswordFail() throws InterruptedException {
+        // Mở trang đăng ký
+        driver.get("http://localhost:8080/register");
+        Thread.sleep(1000);
+
+        // Lấy các yếu tố cần thiết
+        WebElement usernameInput = driver.findElement(By.id("username"));
+        WebElement passwordInput = driver.findElement(By.id("password"));
+        WebElement confirmPasswordInput = driver.findElement(By.id("confirmPassword"));
+        WebElement registerBtn = driver.findElement(By.cssSelector("button[type='submit']"));
+
+        // Nhập thông tin vào form
+        String username = "userfail" + System.currentTimeMillis();
+        String weakPassword = "1234";
+
+        usernameInput.sendKeys(username);
+        passwordInput.sendKeys(weakPassword);
+        confirmPasswordInput.sendKeys(weakPassword);
+        Thread.sleep(1000);
+
+        // Nhấn nút đăng ký
+        registerBtn.click();
+        Thread.sleep(2000);
+
+        // Kiểm tra thông báo lỗi trên trang
+        WebElement errorMsg = driver.findElement(By.cssSelector(".alert.alert-danger p"));
+        String errorText = errorMsg.getText();
+
+        Assert.assertTrue(errorText.contains("Mật khẩu phải từ 8 ký tự, có 1 chữ in hoa và 1 ký tự đặc biệt"));
+    }
+
+    @Test
+    public void testRegisterWithEmptyFields() throws InterruptedException {
+        driver.get("http://localhost:8080/register");
+        Thread.sleep(1000);
+
+        // Tìm các yếu tố cần thiết
+        WebElement usernameInput = driver.findElement(By.id("username"));
+        WebElement passwordInput = driver.findElement(By.id("password"));
+        WebElement confirmPasswordInput = driver.findElement(By.id("confirmPassword"));
+        WebElement registerBtn = driver.findElement(By.cssSelector("button[type='submit']"));
+
+        usernameInput.sendKeys("");
+        passwordInput.sendKeys("");
+        confirmPasswordInput.sendKeys("");
+
+        registerBtn.click();
+        Thread.sleep(2000);
+
+        WebElement errorMsg = driver.findElement(By.cssSelector(".alert.alert-danger p"));
+        String errorText = errorMsg.getText();
+
+        Assert.assertTrue(errorText.contains("Vui lòng điền đầy đủ thông tin"));
+    }
+
+    @AfterClass
+    public void tearDown() {
+        driver.quit();
     }
 }

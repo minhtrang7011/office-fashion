@@ -32,20 +32,37 @@ public class AuthController {
                         @RequestParam String password,
                         HttpServletResponse response,
                         Model model) {
-        User user = userService.login(username, password);
-        if (user != null) {
-            // Tạo cookie
-            Cookie cookie = new Cookie("username", user.getUsername());
-            cookie.setMaxAge(60 * 60); // 1 tiếng
-            cookie.setPath("/"); // Áp dụng toàn site
-            response.addCookie(cookie);
-
-            return "redirect:/"; // Chuyển về trang chủ
-        } else {
-            model.addAttribute("error", "Sai tên đăng nhập hoặc mật khẩu");
+        if (username.isEmpty() || password.isEmpty()) {
+            model.addAttribute("error", "Tên đăng nhập và mật khẩu không được để trống");
             return "login";
         }
+
+        if (password.length() < 6) {
+            model.addAttribute("error", "Mật khẩu phải có ít nhất 6 ký tự");
+            return "login";
+        }
+
+        User user = userService.login(username, password);
+
+        if (user == null) {
+            User userByUsername = userService.findByUsername(username);
+
+            if (userByUsername == null) {
+                model.addAttribute("error", "Tên đăng nhập không tồn tại");
+            } else {
+                model.addAttribute("error", "Sai mật khẩu");
+            }
+
+            return "login";
+        } else {
+            Cookie cookie = new Cookie("username", user.getUsername());
+            cookie.setMaxAge(60 * 60);
+            cookie.setPath("/");
+            response.addCookie(cookie);
+            return "redirect:/";
+        }
     }
+
 
     @GetMapping("/register")
     public String showRegisterForm() {
@@ -57,35 +74,42 @@ public class AuthController {
             @RequestParam String username,
             @RequestParam String password,
             @RequestParam String confirmPassword,
-            Model model
-    ) {
-        // 1. Kiểm tra trùng username
-        if (userService.getUserByUsername(username).isPresent()) {
-            model.addAttribute("error", "Tên đăng nhập đã tồn tại!");
+            Model model) {
+
+        if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+            model.addAttribute("error", "Vui lòng điền đầy đủ thông tin");
             return "register";
         }
 
-        // 2. Kiểm tra xác nhận mật khẩu
         if (!password.equals(confirmPassword)) {
-            model.addAttribute("error", "Mật khẩu không khớp!");
+            model.addAttribute("error", "Mật khẩu xác nhận không khớp");
             return "register";
         }
 
-        // 3. Lưu user mới
+        if (password.length() < 6) {
+            model.addAttribute("error", "Mật khẩu phải có ít nhất 6 ký tự");
+            return "register";
+        }
+
+        if (userService.findByUsername(username) != null) {
+            model.addAttribute("error", "Tên đăng nhập đã tồn tại");
+            return "register";
+        }
+
         User user = new User();
         user.setUsername(username);
-        user.setPassword(password); // thực tế nên mã hóa mật khẩu
-        user.setRoleId(2); // mặc định role người dùng thường
+        user.setPassword(password);
+        user.setRoleId(2);
 
         userService.saveUser(user);
 
-        return "redirect:/login"; // chuyển sang trang login
+        return "redirect:/login";
     }
 
     @GetMapping("/logout")
     public String logout(HttpServletResponse response) {
         Cookie cookie = new Cookie("username", "");
-        cookie.setMaxAge(0); // Hết hạn ngay
+        cookie.setMaxAge(0);
         cookie.setPath("/");
         response.addCookie(cookie);
 
